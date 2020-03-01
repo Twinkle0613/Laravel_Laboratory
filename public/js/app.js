@@ -1924,9 +1924,95 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  computed: {
+    table_fields: function table_fields() {
+      return JSON.parse(this.fields);
+    },
+    table_data: function table_data() {
+      return JSON.parse(this.data);
+    }
+  },
+  props: {
+    fields: {},
+    data: {}
+  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log(this.table_fields);
+    console.log(this.table_data);
   }
 });
 
@@ -37302,29 +37388,236 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "row container-fluid" }, [
+    _c("div", { staticClass: " col-md-12" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body p-0" }, [
+          _c(
+            "table",
+            {
+              staticClass: "table table-striped projects",
+              attrs: { id: "user_table" }
+            },
+            [
+              _c("thead", { staticClass: "text-center" }, [
+                _c(
+                  "tr",
+                  _vm._l(_vm.table_fields, function(field) {
+                    return _c(
+                      "th",
+                      { key: field.label, style: { width: field.width } },
+                      [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(field.label) +
+                            " \n                                "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.table_data, function(d) {
+                  return _c("tr", { key: d.id, staticClass: "text-center" }, [
+                    _c("td", [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(d.id) +
+                          "\n                                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(d.email) +
+                          "\n                                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                                        " +
+                          _vm._s(d.email) +
+                          "\n                                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1, true)
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _vm._m(2)
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Users Table")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: { type: "button", "data-toggle": "add", title: "Download" }
+          },
+          [_c("i", { staticClass: "fas fa-download" }), _vm._v(" CSV")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: { type: "button", "data-toggle": "add", title: "Download" }
+          },
+          [_c("i", { staticClass: "fas fa-download" }), _vm._v(" PDF")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: { type: "button", "data-toggle": "add", title: "Download" }
+          },
+          [_c("i", { staticClass: "fas fa-download" }), _vm._v(" EXCEL")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: { type: "button", "data-toggle": "add", title: "add" }
+          },
+          [_c("i", { staticClass: "fas fa-lg fa-plus-square" })]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: {
+              type: "button",
+              "data-card-widget": "collapse",
+              "data-toggle": "tooltip",
+              title: "Collapse"
+            }
+          },
+          [_c("i", { staticClass: "fas fa-minus" })]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-tool",
+            attrs: {
+              type: "button",
+              "data-card-widget": "remove",
+              "data-toggle": "tooltip",
+              title: "Remove"
+            }
+          },
+          [_c("i", { staticClass: "fas fa-times" })]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "project-actions text-right" }, [
+      _c("a", { staticClass: "btn btn-primary btn-sm", attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-search" }),
+        _vm._v(
+          "\n                                            View\n                                        "
+        )
+      ]),
+      _vm._v(" "),
+      _c("a", { staticClass: "btn btn-info btn-sm", attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-pencil-alt" }),
+        _vm._v(
+          "\n                                            Edit\n                                        "
+        )
+      ]),
+      _vm._v(" "),
+      _c("a", { staticClass: "btn btn-danger btn-sm", attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-trash" }),
+        _vm._v(
+          "\n                                            Delete\n                                        "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer clearfix" }, [
+      _c("ul", { staticClass: "pagination pagination-sm m-0 float-left" }, [
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("«")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("1")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("2")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("3")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+            _vm._v("»")
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          staticClass: "form-control select2 float-right form-control-sm",
+          staticStyle: { width: "100px" }
+        },
+        [
+          _c("option", { attrs: { selected: "selected" } }, [_vm._v("10")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("20")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("50")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("100")])
+        ]
+      )
     ])
   }
 ]

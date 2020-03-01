@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -23,6 +24,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $users = User::select(['id','name','email','created_at'])->get();
+        // dd($users);
+        $data = [
+            'users' => $users,
+            'fields' => [ 
+                    ['label' => '#','width' => '1%'],
+                    ['label' => 'Name'],
+                    ['label' => 'Email'],
+                    // ['label' => 'Created At'],
+                    ['label' => 'Action','width' => '240px']
+            ],
+            ];
+
+        // dd($data);
+        return view('home',$data);
     }
 }

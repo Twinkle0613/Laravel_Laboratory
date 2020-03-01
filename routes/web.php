@@ -11,14 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
+Route::get('/', 'Auth\LoginController@login');
 
 Route::get('/test','TestController@handle');
 Route::get('/pay','PayOrderController@store');
 Route::post('/book','BooksController@store');
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
