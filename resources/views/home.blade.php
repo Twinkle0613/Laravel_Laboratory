@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container">
-    {{-- <div class="row container-fluid">
+    <div class="row container-fluid">
         <div class="col-md-12 ">
 
             <div class="card">
@@ -17,9 +17,14 @@
             </div>
         
         </div>
-    </div> --}}
-    
-    <example-component fields={{json_encode($fields)}} data={{json_encode($users)}}></example-component>
+    </div>
+    {{-- {!!json_encode($form_inputs)!!}  --}}
+    <n-table title="User" 
+             :table_fields="{{json_encode($table_fields)}}" 
+             :inputs_info="{{json_encode($form_inputs)}}"
+             url_path='{{route('api.users.index')}}'>
+    </n-table>
+
 
 
 </div>

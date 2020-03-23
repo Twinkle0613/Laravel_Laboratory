@@ -23,3 +23,9 @@ Route::post('/book','BooksController@store');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+
+Route::group(array('before' => 'auth'), function() { 
+
+
+});

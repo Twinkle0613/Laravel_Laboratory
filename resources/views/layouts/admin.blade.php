@@ -12,12 +12,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
  <title>{{ config('app.name')}}</title>
  <script src="{{ asset('js/app.js') }}" defer></script>
  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+ <script>
+  window.Laravel = {!! json_encode([
+      'csrfToken' => csrf_token(),
+      'apiToken' => auth()->user()->createToken('Token Name')->accessToken ?? null,
+  ]) !!};
+</script>
+
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div id="app" class="wrapper">
@@ -338,6 +347,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/bower_components/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/bower_components/admin-lte/dist/js/adminlte.min.js"></script>
+
+
 
 </body>
 </html>

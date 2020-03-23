@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\Users\StoreUserRequest;
 
 class HomeController extends Controller
 {
@@ -24,21 +25,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        $users = User::select(['id','name','email','created_at'])->get();
-        // dd($users);
         $data = [
-            'users' => $users,
-            'fields' => [ 
-                    ['label' => '#','width' => '1%'],
-                    ['label' => 'Name'],
-                    ['label' => 'Email'],
-                    // ['label' => 'Created At'],
-                    ['label' => 'Action','width' => '240px']
+            'table_fields' => [ 
+                    ['key'=> 'id','label' => '#','width' => '1%'],
+                    ['key'=> 'name','label' => 'Name'],
+                    ['key'=> 'email','label' => 'Email'],
+                    ['key'=> 'created_at','label' => 'CreatedAt'],
             ],
+            'form_inputs' => [
+                ['type' => 'text','key'=>'name','label'=>'Name'],
+                ['type' => 'email','for'=> 'inputEmail3' ,'key'=>'email','label'=>'Email'],
+                ['type' => 'password','key'=>'password','label'=>'Password'],
+                ['type' => 'password','key'=>'c_password','label'=>'Confirm Password'],
+            ]
             ];
 
-        // dd($data);
         return view('home',$data);
     }
 }
