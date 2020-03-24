@@ -19,14 +19,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
       'apiToken' => auth()->user()->createToken('Token Name')->accessToken ?? null,
   ]) !!};
 </script>
+{{-- <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/jquery@3.1.1/dist/jquery.js"></script>
+<script src="https://unpkg.com/select2@4.0.3/dist/js/select2.js"></script>
 
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://unpkg.com/select2@4.0.3/dist/css/select2.min.css"
+/> --}}
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
 </head>
 <body class="hold-transition sidebar-mini">
 <div id="app" class="wrapper">

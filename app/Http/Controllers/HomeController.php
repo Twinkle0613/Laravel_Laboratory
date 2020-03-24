@@ -26,19 +26,46 @@ class HomeController extends Controller
     public function index()
     {
         $data = [
-            'table_fields' => [ 
-                    ['key'=> 'id','label' => '#','width' => '1%'],
-                    ['key'=> 'name','label' => 'Name'],
-                    ['key'=> 'email','label' => 'Email'],
-                    ['key'=> 'created_at','label' => 'CreatedAt'],
+            'users_table' => [
+                'table_fields' => [ 
+                        ['key'=> 'id','label' => '#','width' => '1%'],
+                        ['key'=> 'name','label' => 'Name'],
+                        ['key'=> 'email','label' => 'Email'],
+                        ['key'=> 'created_at','label' => 'CreatedAt'],
+                ],
+                'form_inputs' => [
+                    ['type' => 'text','key'=>'name','label'=>'Name'],
+                    ['type' => 'email','for'=> 'inputEmail3' ,'key'=>'email','label'=>'Email'],
+                    ['type' => 'select','key'=>'role','label'=>'Role','multiple'=>false],
+                    ['type' => 'password','key'=>'password','label'=>'Password'],
+                    ['type' => 'password','key'=>'c_password','label'=>'Confirm Password'],
+                ]
             ],
-            'form_inputs' => [
-                ['type' => 'text','key'=>'name','label'=>'Name'],
-                ['type' => 'email','for'=> 'inputEmail3' ,'key'=>'email','label'=>'Email'],
-                ['type' => 'password','key'=>'password','label'=>'Password'],
-                ['type' => 'password','key'=>'c_password','label'=>'Confirm Password'],
+            'roles_table' => [
+                'table_fields' => [ 
+                        ['key'=> 'id','label' => '#','width' => '1%'],
+                        ['key'=> 'name','label' => 'Name'],
+                        ['key'=> 'guard_name','label' => 'Guard Name'],
+                        ['key'=> 'created_at','label' => 'CreatedAt'],
+                ],
+                'form_inputs' => [
+                    ['type' => 'text','key'=>'name','label'=>'Name'],
+                    ['type' => 'select','key'=>'permissions','label'=>'Permissions','multiple'=>true],
+                ]
+            ],
+            'permissions_table' => [
+                'table_fields' => [ 
+                        ['key'=> 'id','label' => '#','width' => '1%'],
+                        ['key'=> 'name','label' => 'Name'],
+                        ['key'=> 'guard_name','label' => 'Guard Name'],
+                        ['key'=> 'created_at','label' => 'CreatedAt'],
+                ],
+                'form_inputs' => [
+                    ['type' => 'text','key'=>'name','label'=>'Name'],
+                ]
             ]
-            ];
+
+        ];
 
         return view('home',$data);
     }

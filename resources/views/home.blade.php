@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container">
-    <div class="row container-fluid">
+    {{-- <div class="row container-fluid">
         <div class="col-md-12 ">
 
             <div class="card">
@@ -17,12 +17,24 @@
             </div>
         
         </div>
-    </div>
-    {{-- {!!json_encode($form_inputs)!!}  --}}
-    <n-table title="User" 
-             :table_fields="{{json_encode($table_fields)}}" 
-             :inputs_info="{{json_encode($form_inputs)}}"
+    </div> --}}
+
+    <n-table title="Users" 
+             :table_fields="{{json_encode($users_table['table_fields'])}}" 
+             :inputs_info="{{json_encode($users_table['form_inputs'])}}"
              url_path='{{route('api.users.index')}}'>
+    </n-table>
+
+    <n-table title="Roles" 
+        :table_fields="{{json_encode($roles_table['table_fields'])}}" 
+        :inputs_info="{{json_encode($roles_table['form_inputs'])}}"
+        url_path='{{route('api.roles.index')}}'>
+    </n-table>
+
+    <n-table title="Permissions" 
+        :table_fields="{{json_encode($permissions_table['table_fields'])}}" 
+        :inputs_info="{{json_encode($permissions_table['form_inputs'])}}"
+        url_path='{{route('api.permissions.index')}}'>
     </n-table>
 
 

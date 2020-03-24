@@ -21,7 +21,7 @@ Route::group([
     'as' => 'api.',
     'middleware' => ['auth:api']
 ], function () {
-
     Route::apiResource('users', 'API\UserController');
-
+    Route::apiResource('roles', 'API\RoleController');
+    Route::apiResource('permissions', 'API\PermissionController');
 });

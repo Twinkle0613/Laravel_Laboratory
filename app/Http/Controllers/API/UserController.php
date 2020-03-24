@@ -5,7 +5,10 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\Users\ShowUserReqeust;
+use App\Http\Requests\Users\ShowUserRequest;
 use App\Http\Requests\Users\StoreUserRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -39,9 +42,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,ShowUserRequest $request)
     {
-        //
+        return (new UserResource(User::find($id)))->response();
     }
 
     /**
@@ -51,9 +54,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id,UpdateUserRequest $request)
     {
-        //
+        $user = User::find($id);
+        $data = $request->all();
+        if(isset($data['password'])){
+            $data['password'] = bcrypt($data['password']);
+        }else{
+            unset($data['password']);
+            unset($data['c_password']);
+        }
+        $user->update($data);
+        
+        return (new UserResource($user))->response();
     }
 
     /**
@@ -62,8 +75,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,ShowUserRequest $request)
     {
-        //
+        User::find($id)->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
     }
 }

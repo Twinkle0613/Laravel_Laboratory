@@ -7,11 +7,14 @@ import axios from 'axios'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "vue-select/dist/vue-select.css";
+import vSelect from "vue-select";
+
 // import Swal from 'sweetalert2'
 require('./bootstrap');
-import 'sweetalert2/src/sweetalert2.scss'
+// import 'sweetalert2/src/sweetalert2.scss'
 window.Vue = require('vue');
-// window.Swal = require('sweetalert2');
+window.Swal = require('sweetalert2');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -25,9 +28,14 @@ window.Vue = require('vue');
 
 Vue.component('n-table', require('./components/nTable.vue').default);
 Vue.component('n-form', require('./components/nForm.vue').default);
+Vue.component("v-select", vSelect);
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+// import jQuery from 'jquery';
+//   window.jQuery = window.$ = jQuery;
+// require('select2')
 
 
 // CommonJS
