@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\Users\ShowUserReqeust;
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return UserResource::collection(User::orderBy('id', 'desc')->paginate($request->per_page,['*'], 'page', $request->page_number));
+        return UserResource::collection(User::with('roles')->orderBy('id', 'desc')->paginate($request->per_page,['*'], 'page', $request->page_number));
     }
 
     /**
@@ -31,9 +32,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
-        return (new UserResource(User::create($data)))->response()->setStatusCode(Response::HTTP_CREATED);
+        $input = $request->all();
+        $data['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+        $user->syncRoles([Role::findMany($input['roles'])]);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -44,7 +47,7 @@ class UserController extends Controller
      */
     public function show($id,ShowUserRequest $request)
     {
-        return (new UserResource(User::find($id)))->response();
+        return (new UserResource(User::with('roles')->where('id',$id)->first()))->response();
     }
 
     /**
@@ -57,15 +60,16 @@ class UserController extends Controller
     public function update($id,UpdateUserRequest $request)
     {
         $user = User::find($id);
-        $data = $request->all();
-        if(isset($data['password'])){
-            $data['password'] = bcrypt($data['password']);
+        $input = $request->all();
+        if(isset($input['password'])){
+            $input['password'] = bcrypt($input['password']);
         }else{
-            unset($data['password']);
-            unset($data['c_password']);
+            unset($input['password']);
+            unset($input['c_password']);
         }
-        $user->update($data);
         
+        $user->syncRoles([Role::findMany($input['roles'])]);
+        $user->update($input);
         return (new UserResource($user))->response();
     }
 

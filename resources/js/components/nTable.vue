@@ -50,8 +50,16 @@
             </thead>
             <tbody>
               <tr v-for="(data) in table_data" :key="data.id" class="text-center">
-                <th v-for="field in table_fields" :key="field.key">{{data[field.key]}}</th>
-                <td class="project-actions text-right">
+                <td v-for="field in table_fields" :key="field.key" >
+                  <span v-if="['text'].includes(field.type)" >{{data[field.key]}}</span>
+                  <div v-else-if="['tag'].includes(field.type) && (data[field.key])"  :style="{'textAlign': 'left'}"  > 
+                    <b-badge variant="primary" v-for="tag in data[field.key]" :key="tag[field.data]" :style="{'fontSize': '90%','margin':'2px','fontWeight':'normal'}">
+                      {{tag[field.data]}}
+                    </b-badge>
+                  </div>
+                  
+                  </td>
+                <td class="project-actions text-right" :style="{'minWidth': '238px'}" >
                   <!-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#action-modal" @click="showModal('view',data.id)" > -->
                   <button
                     class="btn btn-primary btn-sm"
@@ -81,7 +89,7 @@
               <a class="page-link" @click="updatePageNo(first_page)">&laquo;</a>
             </li>
             <li v-for="(n) in meta.last_page" :key="n" class="page-item" @click="updatePageNo(n)">
-              <a class="page-link" href="#">{{n}}</a>
+              <a class="page-link">{{n}}</a>
             </li>
             <li class="page-item">
               <a class="page-link" @click="updatePageNo(meta.last_page)">&raquo;</a>
@@ -165,7 +173,7 @@ export default {
       show_modal: false,
       table_data: [],
       first_page: 1,
-      per_page: 3,
+      per_page: 5,
       page_no: 1,
       meta: [],
       modal: {
@@ -204,19 +212,7 @@ export default {
       this.modal.id = id ? id : null;
       if (['add', 'edit', 'view'].includes(action)) {
         if (['edit', 'view'].includes(action)) {
-          this.$http.get(this.url_path + '/' + id)
-            .then((response) => {
-              let data = response.data.data;
-              console.log(data);
-              this.inputs_info.forEach(element => {
-                this.$refs.nForm.inputs[element.key] = data[element.key]
-              });
-              this.inputs = this.$refs.nForm.inputs;
-            }).catch((error) => {
-              this.noticeError(error);
-            }).then(() => {
-              this.fetchData();
-            });
+          this.fetchDataWithId(id);
         }
         this.modal.show = true;
       } else {
@@ -250,6 +246,7 @@ export default {
       })
     },
     postData(mode, id = null) {
+      console.log(this.inputs);
       this.$http({
         method: (mode == 'add') ? 'post' : 'put',
         url: this.url_path + (id ? '/' + id : ''),
@@ -306,6 +303,25 @@ export default {
         html: error_info,
         showConfirmButton: true,
       })
+    },
+    fetchDataWithId(id){
+      this.$http.get(this.url_path + '/' + id)
+      .then((response) => {
+        let data = response.data.data;
+        var nForm = this.$refs.nForm;
+        this.inputs_info.forEach(element => {
+          if(element.type == 'select'){
+            nForm.inputs[element.key] = _.map(data[element.key],'id')
+          }else{
+            nForm.inputs[element.key] = data[element.key]
+          }
+        });
+        this.inputs = nForm.inputs;
+      }).catch((error) => {
+        this.noticeError(error);
+      }).then(() => {
+        this.fetchData();
+      });
     }
   },
   created() {

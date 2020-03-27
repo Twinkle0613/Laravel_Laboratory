@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+// use App\Model\Role;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,7 @@ use App\Http\Resources\RoleResource;
 use App\Http\Resources\GeneralResource;
 use App\Http\Requests\General\ShowRequest;
 use App\Http\Requests\Roles\StoreRoleRequest;
+use App\Http\Requests\Roles\UpdateRoleRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
@@ -20,7 +22,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        return GeneralResource::collection(Role::orderBy('id', 'desc')->paginate($request->per_page,['*'], 'page', $request->page_number));
+        return GeneralResource::collection(Role::with('permissions')->orderBy('id', 'desc')->paginate($request->per_page,['*'], 'page', $request->page_number));
     }
 
     /**
@@ -31,8 +33,10 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $data = $request->all();
-        return (new GeneralResource(Role::create($data)))->response()->setStatusCode(Response::HTTP_CREATED);
+        $input = $request->validated();
+        $role = Role::create(['name' =>  $input['name']]);
+        $role->syncPermissions($input['permissions']);
+        return (new GeneralResource($role))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -43,7 +47,7 @@ class RoleController extends Controller
      */
     public function show($id,ShowRequest $request)
     {
-        //
+        return (new GeneralResource(Role::with('permissions')->where('id',$id)->first()))->response();
     }
 
     /**
@@ -53,9 +57,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id,UpdateRoleRequest $request)
     {
-        //
+        $input = $request->validated();
+        $role = Role::find($id);
+        $role->permissions()->sync($input['permissions']);
+        $role->update(['name' => $input['name']]);
+        return (new GeneralResource($role))->response();
     }
 
     /**

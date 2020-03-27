@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GeneralResource;
 use Spatie\Permission\Models\Permission;
+use App\Http\Requests\General\ShowRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Permission\StorePermissionRequest;
+use App\Http\Requests\Permission\UpdatePermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -26,7 +29,7 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
         $data = $request->all();
         return (new GeneralResource(Permission::create($data)))->response()->setStatusCode(Response::HTTP_CREATED);
@@ -38,9 +41,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,ShowRequest $request)
     {
-        //
+        return (new GeneralResource(Permission::where('id',$id)->first()))->response();
     }
 
     /**
@@ -50,9 +53,12 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePermissionRequest $request, $id)
     {
-        //
+        $input = $request->validated();
+        $permission = Permission::find($id);
+        $permission->update(['name' => $input['name']]);
+        return (new GeneralResource($permission))->response();
     }
 
     /**
@@ -61,8 +67,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,ShowRequest $request)
     {
-        //
+        Permission::find($id)->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
     }
 }

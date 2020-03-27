@@ -15,6 +15,7 @@ require('./bootstrap');
 // import 'sweetalert2/src/sweetalert2.scss'
 window.Vue = require('vue');
 window.Swal = require('sweetalert2');
+window._ = require('lodash');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
