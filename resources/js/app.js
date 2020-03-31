@@ -9,13 +9,15 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import "vue-select/dist/vue-select.css";
 import vSelect from "vue-select";
-
+import vueDropzone from "vue2-dropzone";
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 // import Swal from 'sweetalert2'
 require('./bootstrap');
 // import 'sweetalert2/src/sweetalert2.scss'
 window.Vue = require('vue');
 window.Swal = require('sweetalert2');
 window._ = require('lodash');
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -30,6 +32,7 @@ window._ = require('lodash');
 Vue.component('n-table', require('./components/nTable.vue').default);
 Vue.component('n-form', require('./components/nForm.vue').default);
 Vue.component("v-select", vSelect);
+Vue.component("vue-dropzone", vueDropzone);
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -46,6 +49,7 @@ axios.defaults.headers.common = {
     'X-CSRF-TOKEN': Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest',
     'Authorization': 'Bearer ' + Laravel.apiToken,
+    // 'Content-Type': 'multipart/form-data'
 };
 
 axios.defaults.baseURL =  'http://laravellab.com/api/v1/';

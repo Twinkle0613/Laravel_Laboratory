@@ -50,16 +50,21 @@
             </thead>
             <tbody>
               <tr v-for="(data) in table_data" :key="data.id" class="text-center">
-                <td v-for="field in table_fields" :key="field.key" >
-                  <span v-if="['text'].includes(field.type)" >{{data[field.key]}}</span>
-                  <div v-else-if="['tag'].includes(field.type) && (data[field.key])"  :style="{'textAlign': 'left'}"  > 
-                    <b-badge variant="primary" v-for="tag in data[field.key]" :key="tag[field.data]" :style="{'fontSize': '90%','margin':'2px','fontWeight':'normal'}">
-                      {{tag[field.data]}}
-                    </b-badge>
+                <td v-for="field in table_fields" :key="field.key">
+                  <span v-if="['text'].includes(field.type)">{{data[field.key]}}</span>
+                  <div
+                    v-else-if="['tag'].includes(field.type) && (data[field.key])"
+                    :style="{'textAlign': 'left'}"
+                  >
+                    <b-badge
+                      variant="primary"
+                      v-for="tag in data[field.key]"
+                      :key="tag[field.data]"
+                      :style="{'fontSize': '90%','margin':'2px','fontWeight':'normal'}"
+                    >{{tag[field.data]}}</b-badge>
                   </div>
-                  
-                  </td>
-                <td class="project-actions text-right" :style="{'minWidth': '238px'}" >
+                </td>
+                <td class="project-actions text-right" :style="{'minWidth': '238px'}">
                   <!-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#action-modal" @click="showModal('view',data.id)" > -->
                   <button
                     class="btn btn-primary btn-sm"
@@ -245,30 +250,46 @@ export default {
         }
       })
     },
-    postData(mode, id = null) {
-      console.log(this.inputs);
-      this.$http({
-        method: (mode == 'add') ? 'post' : 'put',
-        url: this.url_path + (id ? '/' + id : ''),
-        params: this.inputs
-      })
-        .then((response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: true,
-            timer: 1300
-          })
-          var self = this;
-          setTimeout(function () {
-            self.modal.show = false;
-          }, 500);
+   postData(mode, id = null) {
+      const data = new FormData();
 
-        }).catch((error) => {
-          this.noticeError(error);
-        }).then(() => {
-          this.fetchData();
-        });
+      for ( var key in this.inputs ) {
+          if(this.inputs[key]){
+              if(Array.isArray(this.inputs[key])){
+                this.inputs[key].forEach( (item,index) =>{
+                  data.append(`${key}[${index}]`,item);
+                })
+              }else{
+                 data.append(key,this.inputs[key]);
+              }
+          }
+      }
+      
+      if(mode == 'edit'){
+        data.append("_method", "PUT");
+      }
+     this.$http({
+        method: (mode == 'add') ? 'post' : 'post',
+        url: this.url_path + (id ? '/' + id : ''),
+        data: data,
+      })
+      .then((response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: true,
+          timer: 1300
+        })
+        var self = this;
+        setTimeout(function () {
+          self.modal.show = false;
+        }, 500);
+
+      }).catch((error) => {
+        this.noticeError(error);
+      }).then(() => {
+        this.fetchData();
+      });
     },
     updatePerPage() {
       this.page_no = this.first_page;
@@ -279,6 +300,7 @@ export default {
       this.fetchData();
     },
     nFormUpdate(value) {
+      console.log('nFormUpdate',value);
       this.inputs = value;
     },
     fetchData: function () {
@@ -304,24 +326,30 @@ export default {
         showConfirmButton: true,
       })
     },
-    fetchDataWithId(id){
+    fetchDataWithId(id) {
       this.$http.get(this.url_path + '/' + id)
-      .then((response) => {
-        let data = response.data.data;
-        var nForm = this.$refs.nForm;
-        this.inputs_info.forEach(element => {
-          if(element.type == 'select'){
-            nForm.inputs[element.key] = _.map(data[element.key],'id')
-          }else{
-            nForm.inputs[element.key] = data[element.key]
-          }
+        .then((response) => {
+          let data = response.data.data;
+          var nForm = this.$refs.nForm;
+          this.inputs_info.forEach(element => {
+            if (element.type == 'select') {
+              nForm.inputs[element.key] = _.map(data[element.key], 'id')
+            }else if(element.type == 'image'){
+              // nForm.inputs[element.key] = data['media'][0];
+              if(element.type == 'image' && data['image_url']){
+                nForm.images_url[element.key] = data['image_url'];
+              }
+            }else{
+              nForm.inputs[element.key] = data[element.key];
+            }
+          });
+          this.inputs = nForm.inputs;
+          console.log(this.inputs);
+        }).catch((error) => {
+          this.noticeError(error);
+        }).then(() => {
+          this.fetchData();
         });
-        this.inputs = nForm.inputs;
-      }).catch((error) => {
-        this.noticeError(error);
-      }).then(() => {
-        this.fetchData();
-      });
     }
   },
   created() {

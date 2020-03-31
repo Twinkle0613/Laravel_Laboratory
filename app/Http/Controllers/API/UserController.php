@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\Users\ShowUserReqeust;
@@ -32,9 +33,15 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $input = $request->all();
+        
+        $input = $request->validated();
         $data['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
+        if($request->hasFile('picture')){
+            $user->addMediaFromRequest('picture')->toMediaCollection('picture');
+        }
+
         $user->syncRoles([Role::findMany($input['roles'])]);
         return (new UserResource($user))->response()->setStatusCode(Response::HTTP_CREATED);
     }
@@ -60,12 +67,21 @@ class UserController extends Controller
     public function update($id,UpdateUserRequest $request)
     {
         $user = User::find($id);
+
         $input = $request->all();
         if(isset($input['password'])){
             $input['password'] = bcrypt($input['password']);
         }else{
             unset($input['password']);
             unset($input['c_password']);
+        }
+
+        if($request->hasFile('picture')){
+            $media = $user->getMedia('picture')->first();
+            if($media){
+                $media->delete();
+            }
+            $user->addMediaFromRequest('picture')->toMediaCollection('picture');
         }
         
         $user->syncRoles([Role::findMany($input['roles'])]);
@@ -81,7 +97,10 @@ class UserController extends Controller
      */
     public function destroy($id,ShowUserRequest $request)
     {
-        User::find($id)->delete();
+        $user = User::find($id);
+        $media = $user->getMedia('picture')->first();
+        $media->delete();
+        $user->delete();
         return response(null,Response::HTTP_NO_CONTENT);
     }
 }

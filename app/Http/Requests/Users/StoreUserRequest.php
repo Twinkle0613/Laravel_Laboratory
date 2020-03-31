@@ -24,11 +24,18 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
+            'picture' => '',
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'roles' => 'required|exists:roles,id',
             'password' => 'required',  
             'c_password' => 'required|same:password', 
         ];
+    }
+
+    public function all($keys = null) 
+    {
+        $data = parent::all($keys);
+        return $data;
     }
 }

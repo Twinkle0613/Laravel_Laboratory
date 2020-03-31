@@ -27,22 +27,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $role_options = Role::all();
-        // ->map(function($item){
-        //     return [
-        //         'value'=> $item->id,
-        //         'name'=> $item->name,
-        //     ];
-        // });
-
-        $permisson_options = Permission::all();
-        // ->map(function($item){
-        //     return [
-        //         'value'=> $item->id,
-        //         'name'=> $item->name,
-        //     ];
-        // });
 
         $data = [
             'users_table' => [
@@ -54,9 +38,10 @@ class HomeController extends Controller
                         // ['type' => 'text', 'key'=> 'created_at','label' => 'CreatedAt'],
                 ],
                 'form_inputs' => [
+                    ['type' => 'image','key'=>'picture','label'=>'Picture','default_img' => asset('')],
                     ['type' => 'text','key'=>'name','label'=>'Name'],
                     ['type' => 'email','for'=> 'inputEmail3' ,'key'=>'email','label'=>'Email'],
-                    ['type' => 'select','key'=>'roles','label'=>'Roles','multiple'=>true,'options' => $role_options,'api'=> route('api.roles.index') ],
+                    ['type' => 'select','key'=>'roles','label'=>'Roles','multiple'=>true,'api'=> route('api.roles.index') ],
                     ['type' => 'password','key'=>'password','label'=>'Password'],
                     ['type' => 'password','key'=>'c_password','label'=>'Confirm Password'],
                 ]
@@ -69,7 +54,7 @@ class HomeController extends Controller
                 ],
                 'form_inputs' => [
                     ['type' => 'text','key'=>'name','label'=>'Name'],
-                    ['type' => 'select','key'=>'permissions','label'=>'Permissions','multiple'=>true, 'options' => $permisson_options,'api'=> route('api.permissions.index')],
+                    ['type' => 'select','key'=>'permissions','label'=>'Permissions','multiple'=>true,'api'=> route('api.permissions.index')],
                 ]
             ],
             'permissions_table' => [

@@ -6,14 +6,16 @@ use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use SoftDeletes;
-    use Notifiable,HasRoles,HasApiTokens;
+    use Notifiable,HasRoles,HasApiTokens,HasMediaTrait;
     
     protected $softDelete = true; 
 
@@ -44,8 +46,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    protected $appends = ['image_url'];
+
     public function getCreatedAtAttribute($date)
     {
         return Carbon::parse($date)->format('d-M-Y');
     }
+
+    public function getImageUrlAttribute(){
+        return $this->getFirstMediaUrl('picture');
+    }
+
 }

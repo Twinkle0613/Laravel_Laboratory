@@ -1,24 +1,7 @@
 @extends('layouts.admin')
 @section('content')
+
 <div class="container">
-    {{-- <div class="row container-fluid">
-        <div class="col-md-12 ">
-
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    You are logged in!
-                </div>
-            </div>
-        
-        </div>
-    </div> --}}
-
     <n-table title="Users" 
              :table_fields="{{json_encode($users_table['table_fields'])}}" 
              :inputs_info="{{json_encode($users_table['form_inputs'])}}"
@@ -38,11 +21,6 @@
         </n-table>
     @endcan
 @endrole
-
-
 </div>
-
-
-
 
 @endsection
