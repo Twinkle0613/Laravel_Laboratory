@@ -31,6 +31,7 @@ window._ = require('lodash');
 
 Vue.component('n-table', require('./components/nTable.vue').default);
 Vue.component('n-form', require('./components/nForm.vue').default);
+Vue.component('n-chat', require('./components/nChat.vue').default);
 Vue.component("v-select", vSelect);
 Vue.component("vue-dropzone", vueDropzone);
 
@@ -52,7 +53,7 @@ axios.defaults.headers.common = {
     // 'Content-Type': 'multipart/form-data'
 };
 
-axios.defaults.baseURL =  'http://laravellab.com/api/v1/';
+axios.defaults.baseURL =  'http://laravellaboratory.localhost/api/v1/';
 
 Vue.prototype.$http = axios
 

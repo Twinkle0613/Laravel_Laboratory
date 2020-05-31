@@ -24,4 +24,5 @@ Route::group([
     Route::apiResource('users', 'API\UserController');
     Route::apiResource('roles', 'API\RoleController');
     Route::apiResource('permissions', 'API\PermissionController');
+    Route::apiResource('chat-contacts', 'API\ChatContactController');
 });
